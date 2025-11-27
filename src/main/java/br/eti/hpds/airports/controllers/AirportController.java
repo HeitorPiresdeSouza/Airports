@@ -1,6 +1,7 @@
 package br.eti.hpds.airports.controllers;
 
 import br.eti.hpds.airports.DTO.AirportMinDTO;
+import br.eti.hpds.airports.DTO.AirportNearMeDTO;
 import br.eti.hpds.airports.entities.Airport;
 import br.eti.hpds.airports.service.AirportService;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*Anuncia ao Spring que essa classe vai ser um Controller – e que haverá
@@ -67,6 +69,20 @@ public class AirportController {
             return ResponseEntity.notFound().build();
             
         }else{
+            return ResponseEntity.ok(result);
+        }
+    }
+    @GetMapping("/nearme")
+    public ResponseEntity<List<AirportNearMeDTO>> findNearMe(
+            @RequestParam double latitude,
+            @RequestParam double longitude ){
+        
+        List<AirportNearMeDTO> result = airportService.findNearMe(latitude, longitude);
+        
+        if (result.isEmpty()){
+            return ResponseEntity.notFound().build();
+            
+        }else {
             return ResponseEntity.ok(result);
         }
     }

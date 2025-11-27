@@ -1,7 +1,9 @@
 package br.eti.hpds.airports.service;
 
 import br.eti.hpds.airports.DTO.AirportMinDTO;
+import br.eti.hpds.airports.DTO.AirportNearMeDTO;
 import br.eti.hpds.airports.entities.Airport;
+import br.eti.hpds.airports.projections.AirportNearMeProjection;
 import br.eti.hpds.airports.repositories.AirportRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,14 @@ import org.springframework.stereotype.Service;
         public Airport findByIataCode(String iataCode) {
             Airport result = airportRepository.findByIataCode(iataCode);
             return result;
+        }
+        public List<AirportNearMeDTO> findNearMe(double latitude, double longitude) {
+            List<AirportNearMeProjection>  resultNearAirports = airportRepository.findNearMe(latitude, longitude);
+            
+            List<AirportNearMeDTO> resultDTO = resultNearAirports.stream()
+                    .map(x -> new AirportNearMeDTO(x)).toList();
+            
+            return resultDTO;
         }
     }
 
