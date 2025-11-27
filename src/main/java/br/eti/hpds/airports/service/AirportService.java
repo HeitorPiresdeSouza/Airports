@@ -1,5 +1,6 @@
 package br.eti.hpds.airports.service;
 
+import br.eti.hpds.airports.DTO.AirportMinDTO;
 import br.eti.hpds.airports.entities.Airport;
 import br.eti.hpds.airports.repositories.AirportRepository;
 import java.util.List;
@@ -21,6 +22,16 @@ import org.springframework.stereotype.Service;
         public List<Airport> findByCity(String city){
             List<Airport> result = airportRepository.findByCityIgnoreCase(city);
             return result;
+        }
+        
+        
+        public List<AirportMinDTO> findByCountry(String country) {
+            List<Airport> resultAirport = airportRepository.findByCountryIgnoreCase(country);
+            
+            List<AirportMinDTO> resultDTO = resultAirport.stream()
+                    .map(x -> new AirportMinDTO(x)).toList();
+            
+            return resultDTO;
         }
     }
 
